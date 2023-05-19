@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transport Info</title>
+    <style>
+      .vehicle-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .vehicle-card img {
+        width: 300px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vehicle-container"></div>
+
+    <script>
+      class Transport {
+        constructor(type, price, brand) {
+          this.type = type;
+          this.price = price;
+          this.brand = brand;
+        }
+
+        getInfo() {
+          return `Type: ${this.type}, Brand: ${this.brand}`;
+        }
+
+        getPrice() {
+          return `Price: $${this.price}`;
+        }
+      }
+
+      class Car extends Transport {
+        constructor(type, price, brand, doors) {
+          super(type, price, brand);
+          this.doors = doors;
+        }
+
+        getDoorsCount() {
+          return `Doors: ${this.doors}`;
+        }
+      }
+
+      class Bike extends Transport {
+        constructor(type, price, brand, maxSpeed) {
+          super(type, price, brand);
+          this.maxSpeed = maxSpeed;
+        }
+
+        getMaxSpeed() {
+          return `Max Speed: ${this.maxSpeed} km/h`;
+        }
+      }
+
+      const data = [
+        {
+          id: 1,
+          type: "car",
+          brand: "Audi",
+          doors: 4,
+          price: 4300000,
+          image:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/2020_Audi_e-Tron_Sport_50_Quattro.jpg/1200px-2020_Audi_e-Tron_Sport_50_Quattro.jpg",
+        },
+        {
+          id: 2,
+          type: "car",
+          brand: "Mercedes-Benz",
+          doors: 4,
+          price: 2800000,
+          image:
+            "https://www.mercedes-benz-mena.com/en/passengercars/mercedes-benz-cars/models/e-class/sedan-w213-fl/explore/_jcr_content/notificationboxes/notificationbox/image.MQ6.12.20211013084329.jpeg",
+        },
+        {
+          id: 3,
+          type: "bike",
+          brand: "Harley-Davidson",
+          maxSpeed: 210,
+          price: 1300000,
+          image:
+            "https://www.harley-davidson.com/content/dam/h-d/images/product-images/bikes/motorcycle/2022/2022-iron-883/2022-iron-883-016/2022-iron-883-016-motorcycle.jpg",
+        },
+        {
+          id: 4,
+          type: "bike",
+          brand: "Harley-Davidson",
+          maxSpeed: 220,
+          price: 1400000,
+          image:
+            "https://cdn.dealerspike.com/imglib/products/harley-showroom/2020/livewire/main/Vivid-Black-Main.png",
+        },
+      ];
+
+      function createVehicleCard(vehicle) {
+        const vehicleCard = document.createElement("div");
+        vehicleCard.className = "vehicle-card";
+
+        const image = document.createElement("img");
+        image.src = vehicle.image;
+        vehicleCard.appendChild(image);
+
+        const info = document.createElement("p");
+        info.textContent = vehicle.getInfo();
+        vehicleCard.appendChild(info);
+
+        const price = document.createElement("p");
+        price.textContent = vehicle.getPrice();
+        vehicleCard.appendChild(price);
+
+        if (vehicle instanceof Car) {
+          const doorsCount = document.createElement("p");
+          doorsCount.textContent = vehicle.getDoorsCount();
+          vehicleCard.appendChild(doorsCount);
+        }
+
+        if (vehicle instanceof Bike) {
+          const maxSpeed = document.createElement("p");
+          maxSpeed.textContent = vehicle.getMaxSpeed();
+          vehicleCard.appendChild(maxSpeed);
+        }
+
+        return vehicleCard;
+      }
+
+      function appendVehicleCards() {
+        const vehicleContainer = document.getElementById("vehicle-container");
+
+        data.forEach((item) => {
+          const { type, price, brand, doors, maxSpeed, image } = item;
+          let vehicle;
+
+          if (type === "car") {
+            vehicle = new Car(type, price, brand, doors);
+          } else if (type === "bike") {
+            vehicle = new Bike(type, price, brand, maxSpeed);
+          }
+
+          if (vehicle) {
+            const vehicleCard = createVehicleCard(vehicle);
+            vehicleContainer.appendChild(vehicleCard);
+          }
+        });
+      }
+
+      appendVehicleCards();
+    </script>
+  </body>
+</html>
